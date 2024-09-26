@@ -1,0 +1,39 @@
+name: Deploy to Heroku
+
+on:
+  push:
+    branches:
+      - master  # Trigger deployment on push to the master branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    # Set up Docker to build the image
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    # Log in to the Heroku container registry using the Heroku API key
+    - name: Log in to Heroku Container Registry
+      run: echo "$HEROKU_API_KEY" | docker login --username=_ --password-stdin registry.heroku.com
+
+    # Build the Docker image for linux/amd64 architecture
+    - name: Build Docker image
+      run: docker build --platform linux/amd64 -t registry.heroku.com/cst438p2g17/web .
+
+    # Push the Docker image to Heroku container registry
+    - name: Push Docker image to Heroku
+      run: docker push registry.heroku.com/cst438p2g17/web
+
+    # Release the Docker image on Heroku
+    - name: Release on Heroku
+      run: |
+        heroku auth:token | docker login --username=_ --password-stdin registry.heroku.com
+        heroku container:release web --app cst438p2g17
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
