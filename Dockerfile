@@ -1,12 +1,11 @@
-FROM python:3
+FROM eclipse-temurin:21-jdk-focal
 
-ENV PYTHONUNBUFFERED 1
+WORKDIR /app
 
-RUN mkdir /new_app
-WORKDIR /new_app
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 
-ADD . /new_app/
+COPY src ./src
 
-RUN pip3 install -r requirements.txt
-
-CMD python3 manage.py runserver 0.0.0.0:$PORT
+CMD ["./mvnw", "spring-boot:run"]
