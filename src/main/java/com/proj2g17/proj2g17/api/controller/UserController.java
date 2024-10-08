@@ -48,4 +48,8 @@ public class UserController {
         }
     }
 
+    public Optional<User> getByUser_id(Integer user_id) {
+        return userRepository.findById(user_id);
+    }
+
 }
