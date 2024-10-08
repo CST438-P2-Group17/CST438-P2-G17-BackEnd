@@ -2,6 +2,8 @@ package com.proj2g17.proj2g17.api.model;
 
 import jakarta.persistence.*;
 
+import java.util.Set;
+
 @Entity
 @Table(name="user")
 public class User {
@@ -19,6 +21,9 @@ public class User {
 
     @Column(name="is_admin")
     private Boolean is_admin;
+
+    @OneToMany(mappedBy = "user")
+    Set<Wishlist> wishlists;
 
     public User() {};
 
