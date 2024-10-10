@@ -5,6 +5,7 @@ import com.proj2g17.proj2g17.api.model.Wishlist;
 import com.proj2g17.proj2g17.api.repositories.UserRepository;
 import com.proj2g17.proj2g17.api.repositories.WishlistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,17 @@ public class WishlistController {
         }
         else{
             throw new RuntimeException("USER NOT FOUND");
+        }
+    }
+
+    @DeleteMapping("/deleteWishlist")
+    public ResponseEntity<Void> deleteWishlist(@RequestParam Integer wishlist_id) {
+        Optional<Wishlist> wishlist = wishlistRepository.findById(wishlist_id);
+        if (wishlist.isPresent()) {
+            wishlistRepository.delete(wishlist.get());
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }
