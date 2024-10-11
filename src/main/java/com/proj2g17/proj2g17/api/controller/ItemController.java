@@ -28,7 +28,7 @@ public class ItemController {
 
     @GetMapping("/searchItems")
     public List<Item> getItemsByName(@RequestParam String name) {
-        Optional<List<Item>> itemOptional = itemRepository.findByNameContaining(name);
+        Optional<List<Item>> itemOptional = itemRepository.findAllByNameContaining(name);
         return itemOptional.orElseGet(Collections::emptyList);
     }
 
