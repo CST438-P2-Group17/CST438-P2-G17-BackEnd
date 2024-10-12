@@ -7,6 +7,7 @@ import com.proj2g17.proj2g17.api.repositories.ItemRepository;
 import com.proj2g17.proj2g17.api.repositories.WishlistRepository;
 import com.proj2g17.proj2g17.api.repositories.WishlistedItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,15 @@ public class WishlistedItemController {
         this.wishlistRepository = wishlistRepository;
         this.itemRepository =itemRepository;
     }
+
+//    @GetMapping("/viewUserWishlist")
+//    public List<WishlistedItem> getWishlistByWishlist_id(@RequestParam int wishlist_id){
+//        return wishlistedItemRepository.findAllByWishlist_id(wishlist_id);
+//
+//    }
+
+
+
 
     @GetMapping("/userItems")
     public List<WishlistedItem> getAllItemsByUser(@RequestParam Integer user_id) {
@@ -51,4 +61,15 @@ public class WishlistedItemController {
         }
     }
 
+    @DeleteMapping("/deleteWishlistedItem")
+    public ResponseEntity<Void> deleteWishlistedItem(@RequestParam int wishlisted_item_id) {
+        Optional<WishlistedItem> optionalWishlistedItem = wishlistedItemRepository.findById(wishlisted_item_id);
+        if(optionalWishlistedItem.isPresent()){
+            wishlistedItemRepository.delete(optionalWishlistedItem.get());
+            return ResponseEntity.noContent().build();
+        }
+        else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
