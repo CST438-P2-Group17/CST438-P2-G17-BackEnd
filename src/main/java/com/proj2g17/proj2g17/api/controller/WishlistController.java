@@ -28,6 +28,11 @@ public class WishlistController {
         return wishlistRepository.findAll();
     }
 
+    @GetMapping("/userWishlists")
+    public List<Wishlist> getWishlistsByUser(@RequestParam Integer user_id) {
+        return wishlistRepository.findAllByUserId(user_id);
+    }
+
     @PostMapping("/addWishlist")
     public Wishlist addWishList(@RequestParam int userId, @RequestParam String name ){
         Optional<User> user = userRepository.findById(userId);
@@ -41,6 +46,8 @@ public class WishlistController {
             throw new RuntimeException("USER NOT FOUND");
         }
     }
+
+
 
     @DeleteMapping("/deleteWishlist")
     public ResponseEntity<Void> deleteWishlist(@RequestParam Integer wishlist_id) {
