@@ -33,7 +33,10 @@ public class WishlistedItemController {
 //
 //    }
 
-
+    @GetMapping("/viewWishlist")
+    public List<WishlistedItem> getWishlistByWishlist_id(@RequestParam int wishlist_id){
+        return wishlistedItemRepository.findAllByWishlistId(wishlist_id);
+    }
 
 
     @GetMapping("/userItems")

@@ -13,4 +13,7 @@ public interface WishlistedItemRepository extends JpaRepository<WishlistedItem, 
     // Some documentation for this: https://www.baeldung.com/spring-data-jpa-query
     @Query("SELECT wi FROM WishlistedItem wi JOIN wi.wishlist w WHERE w.user.user_id = ?1")
     List<WishlistedItem> findAllByUser_id(Integer user_id);
+
+    @Query("SELECT wi FROM WishlistedItem wi WHERE wi.wishlist.wishlist_id = ?1")
+    List<WishlistedItem> findAllByWishlistId(Integer wishlistId);
 }
